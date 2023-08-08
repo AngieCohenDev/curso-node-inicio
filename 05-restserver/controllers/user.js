@@ -7,8 +7,14 @@ const userGet = (req, res = response) => {
 }
 
 const userPost = (req, res = response) => {
+    
+    const {nombre, edad, color} = req.body;
+    
     res.json({
       msg: "post API - controlador",
+      nombre,
+      edad,
+      color
     });
 }
 

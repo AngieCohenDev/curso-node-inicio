@@ -9,6 +9,7 @@ const {
 
 const router = Router();
 
+
 router.get("/", userGet);
 
 router.put("/", userPut);
