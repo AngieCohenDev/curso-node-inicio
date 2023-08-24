@@ -7,11 +7,10 @@ const {
   userPatch,
 } = require("../controllers/user");
 const { check } = require("express-validator");
-const { ValidarCampos } = require("../middlewares/validar_campos");
-const { roleValido, ifMailExiste, existeUsuarioPorId } = require("../helpers/db-validators");
-const { validarJWt } = require("../middlewares/validar-jwt");
-const { adminRole, tieneRole } = require("../middlewares/validar-roles");
 
+const { roleValido, ifMailExiste, existeUsuarioPorId } = require("../helpers/db-validators");
+
+const {ValidarCampos, validarJWt,tieneRole} = require('../middlewares')
 
 const router = Router();
 
