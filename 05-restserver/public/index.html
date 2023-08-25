@@ -1,13 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denegado</title>
-</head>
-<body>
-
-    <h1>Acceso denegado</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Sing-in</title>
+  </head>
+  <body>
+    <h1>Google Sing-in</h1>
+    <hr />
+    <div
+      id="g_id_onload"
+      data-client_id="796233990120-vuvpn1cp03gg86rilqllqev2hpcnrtva.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false"
+    ></div>
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-shape="rectangular"
+      data-logo_alignment="left"
+    ></div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+          function handleCredentialResponse(response) {
+            
+            const id_token=response.credential;
+            var data = { id_token };
+            var url = (window.location.hostname.includes('localhost') )
+                    ? 'http://localhost:8080/api/auth/google'
+                    : 'https://abcde.herokuapp.com/api/auth/google'
     
-</body>
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+    
+            var myInit = { method: 'POST',
+                        headers: myHeaders,
+                        mode: 'cors',
+                        cache: 'default',
+                        body: JSON.stringify(data) };
+    
+            var myRequest = new Request(url, myInit);
+        
+        
+            fetch( myRequest )
+            .then(resp => resp.json() )
+            .then(data => console.log('Nuestro Server', data))
+            .catch(console.warn);          
+            console.log('id_token',response.credential);
+          }
+    </script>
+  </body>
 </html>
