@@ -73,7 +73,7 @@ const userDelete = async(req, res = response) => {
 
 
   res.json({
-    usuario
+    usuario      
   });
 };
 
