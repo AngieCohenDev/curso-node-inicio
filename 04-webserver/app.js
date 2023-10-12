@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+//Servir contenido estatico //Midlleware
+app.use(express.static('public'));
+
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
@@ -10,7 +13,7 @@ app.get("/hola-mundo", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.send("404 | Page not found");
+  res.sendFile(__dirname + '/public/404.html');
 });
 
-app.listen(8080);
+app.listen(3000);
