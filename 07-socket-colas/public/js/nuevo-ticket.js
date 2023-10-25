@@ -15,7 +15,7 @@ socket.on('disconnect', () => {
 });
 
 socket.on('ultimo-ticket', (ultimo) =>{
-    lblNuevoTicket.innerHTML = 'Ticket' + ultimo;
+    lblNuevoTicket.innerHTML = 'Ticket  ' +  ultimo;
 })
 
 
