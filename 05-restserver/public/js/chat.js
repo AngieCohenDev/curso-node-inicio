@@ -6,6 +6,13 @@ const url = window.location.hostname.includes("localhost")
 let usuario = null;
 let socket = null;
 
+// Referencias HTML
+const txtUid      = document.querySelector('#txtUid') 
+const txtMens     = document.querySelector('#txtMens') 
+const ulUsuarios  = document.querySelector('#ulUsuarios') 
+const ulMensajes  = document.querySelector('#ulMensajes') 
+const btnSalir    = document.querySelector('#btnSalir') 
+
 // Validar el token del localstorage
 const validarJWT = async() => {
 
@@ -29,12 +36,62 @@ const validarJWT = async() => {
 }
 
 const conectarSocket = async() => {
-    const socket = io({
+    socket = io({
         'extraHeaders':{
             'x-token': localStorage.getItem('token')
         }
     });
+
+    socket.on('connect', ()=>{
+        console.log('Sockets online');
+    });
+
+    socket.on('disconnect', ()=>{
+        console.log('Sockets offline');
+    })
+
+    socket.on('recibir-mensajes', (payload)=>{
+        console.log(payload);
+    })
+
+    socket.on('usuarios-activos', dibujarUsuarios)
+
+    socket.on('mensaje-pricado', ()=>{
+        // TODO
+    })
+
+
 }
+
+const dibujarUsuarios = (usuarios = []) =>{
+
+    let usersHtml = '';
+    usuarios.forEach(({nombre, iud}) => {
+        usersHtml += `
+            <li>
+                <p>
+                    <h5 class="text-success">${nombre}</h5>
+                    <spam class="fs-6 text-muted">${iud}</spam>
+                </p>
+            </li>
+        `;
+    });
+
+    ulUsuarios.innerHTML = usersHtml;
+}
+
+txtMens.addEventListener('keyup', ({keyCode}) =>{
+
+    const mensaje = txtMens.value;
+    const iud  = txtUid.value;
+
+    if( keyCode !== 13){ return;}
+    if(mensaje.length === 0){return;}
+
+    socket.emit('enviar-mensaje', {mensaje, iud});
+
+    txtMens.value = '';
+})
 
 const main = async() => {
 
