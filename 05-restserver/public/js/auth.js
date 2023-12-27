@@ -25,7 +25,8 @@ const url = window.location.hostname.includes("localhost")
         if(msg){
             return console.error(msg);
         }
-        localStorage.setItem('token', token)
+        localStorage.setItem('token', token);
+        window.location = 'chat.html';
       })
       .catch((err) => {
         console.log(err);
