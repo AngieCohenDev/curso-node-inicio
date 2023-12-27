@@ -1,12 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
+const {createServer} = require('http');
+
 const { dbConnection } = require("../database/config");
+const { socketController } = require("../sockets/controller");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.server = createServer(this.app);
+    this.io   = require('socket.io')(this.server)
 
     this.paths = {
       auth:       "/api/auth",
@@ -25,6 +30,9 @@ class Server {
 
     //Rutas del servidor
     this.routes();
+
+    // Sockets
+    this.sockets();
   }
 
   middlewares() {
@@ -58,8 +66,12 @@ class Server {
     this.app.use(this.paths.uploads, require("../routes/uploads"));
   }
 
+  sockets(){
+    this.io.on('connection', socketController)
+}
+
   listen() {
-    this.app.listen(this.port, () => {
+    this.server.listen(this.port, () => {
       console.log("Servidor corriendo en el puerto", this.port);
     });
   }
