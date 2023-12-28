@@ -1,12 +1,9 @@
-import {Sequelize} from 'sequelize';
+import { Sequelize } from 'sequelize';
 
-
-const db = new Sequelize('node', 'root', {
-   
-    dialect:'mysql',
-    host:'localhost',
-   
-    //logging: false,
-})
+const db = new Sequelize('node', 'root', '', {
+    host: 'localhost',
+    dialect: 'mariadb',
+    // logging: false
+});
 
 export default db;
